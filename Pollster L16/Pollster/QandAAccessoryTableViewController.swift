@@ -1,0 +1,76 @@
+//
+//  QandAAccessoryDoneTableViewController.swift
+//  Pollster
+//
+//  Created by CS193p Instructor.
+//  Copyright © 2016 Stanford University. All rights reserved.
+//
+
+import UIKit
+
+// Adds accessoryValues for the cells
+
+class QandAAccessoryTableViewController: QandATableViewController
+{
+    // MARK: Public API
+
+    // key is content found in a cell
+    // value is what to put in the accessory label for that cell
+    // note: if two cells have the same content, they'll both get the same accessory value
+    // (which may or may not be what you want, but there it is)
+
+    var accessoryValues = [String:CustomStringConvertible]() {
+        didSet {
+            for content in data?[Section.Answers] ?? [] {
+                accessoryLabelForContent(content)?.text = "\(accessoryValues[content] ?? "")"
+            }
+        }
+    }
+    
+    // MARK: - Private Implementation
+
+    fileprivate func accessoryLabelForContent(_ content: String) -> UILabel? {
+        for cell in tableView.visibleCells {
+            for subview in cell.contentView.subviews {
+                if let textView = subview as? UITextView , textView.text == content {
+                    for subview in textView.subviews {
+                        if let label = subview as? UILabel {
+                            return label
+                        }
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
+    override func createTextViewForIndexPath(_ indexPath: IndexPath?) -> UITextView {
+        let textView = super.createTextViewForIndexPath(indexPath)
+        createAccessoryLabel(inTextView: textView)
+        return textView
+    }
+    
+    fileprivate func createAccessoryLabel(inTextView textView: UITextView) {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.text = "100"
+        label.sizeToFit()
+        let width = label.bounds.size.width
+        label.frame = CGRect(x: textView.bounds.maxX - width, y: 0, width: width, height: textView.bounds.size.height)
+        label.text = ""
+        label.autoresizingMask = [.flexibleHeight,.flexibleLeftMargin]
+        textView.addSubview(label)
+    }
+
+    // MARK: UITableViewDataSource
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        if asking && (indexPath as NSIndexPath).section == Section.Answers {
+            if let answerInRow = data?[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row] {
+                accessoryLabelForContent(answerInRow)?.text = "\(accessoryValues[answerInRow] ?? "")"
+            }
+        }
+        return cell
+    }
+}
