@@ -33,10 +33,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 // so all we need to do is set the fetchedResultsController var
 // and implement tableView(cellForRowAtIndexPath:)
 
-class TweetersTableViewController: CoreDataTableViewController<TwitterUser>
+class TweetersTableViewController: CoreDataTableViewController
 {
     var mention: String? { didSet { updateUI() } }
     var managedObjectContext: NSManagedObjectContext? { didSet { updateUI() } }
+    
        fileprivate func updateUI() {
         if let context = managedObjectContext , mention?.characters.count > 0 {
             let request = NSFetchRequest<TwitterUser>(entityName: "TwitterUser")

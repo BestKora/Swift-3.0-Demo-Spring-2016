@@ -8,9 +8,9 @@
 import UIKit
 import CoreData
 
-class CoreDataTableViewController<Entity:NSFetchRequestResult>: UITableViewController, NSFetchedResultsControllerDelegate
+class CoreDataTableViewController: UITableViewController, NSFetchedResultsControllerDelegate
 {
-    var fetchedResultsController: NSFetchedResultsController<Entity>? {
+    var fetchedResultsController: NSFetchedResultsController<TwitterUser>? {
         didSet {
             do {
                 if let frc = fetchedResultsController {
