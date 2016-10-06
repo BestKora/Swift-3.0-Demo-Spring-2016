@@ -13,14 +13,14 @@ class FaceView: UIView
     var scale: CGFloat = 0.90
     var mouthCurvature: Double = 1.0 // 1 full smile, -1 full frown
 
-    fileprivate var skullRadius: CGFloat {
+    private var skullRadius: CGFloat {
         return min(bounds.size.width, bounds.size.height) / 2 * scale
     }
-    fileprivate var skullCenter: CGPoint {
+   private var skullCenter: CGPoint {
         return CGPoint(x: bounds.midX, y: bounds.midY)
     }
 
-    fileprivate struct Ratios {
+    private struct Ratios {
         static let SkullRadiusToEyeOffset: CGFloat = 3
         static let SkullRadiusToEyeRadius: CGFloat = 10
         static let SkullRadiusToMouthWidth: CGFloat = 1
@@ -28,12 +28,12 @@ class FaceView: UIView
         static let SkullRadiusToMouthOffset: CGFloat = 3
     }
     
-    fileprivate enum Eye {
+   private enum Eye {
         case left
         case right
     }
 
-    fileprivate func pathForCircleCenteredAtPoint(_ midPoint: CGPoint, withRadius radius: CGFloat) -> UIBezierPath
+    private func pathForCircleCenteredAtPoint(_ midPoint: CGPoint, withRadius radius: CGFloat) -> UIBezierPath
     {
         let path = UIBezierPath(
             arcCenter: midPoint,
@@ -46,7 +46,7 @@ class FaceView: UIView
         return path
     }
     
-    fileprivate func getEyeCenter(_ eye: Eye) -> CGPoint
+    private func getEyeCenter(_ eye: Eye) -> CGPoint
     {
         let eyeOffset = skullRadius / Ratios.SkullRadiusToEyeOffset
         var eyeCenter = skullCenter
@@ -58,14 +58,14 @@ class FaceView: UIView
         return eyeCenter
     }
     
-    fileprivate func pathForEye(_ eye: Eye) -> UIBezierPath
+    private func pathForEye(_ eye: Eye) -> UIBezierPath
     {
         let eyeRadius = skullRadius / Ratios.SkullRadiusToEyeRadius
         let eyeCenter = getEyeCenter(eye)
         return pathForCircleCenteredAtPoint(eyeCenter, withRadius: eyeRadius)
     }
     
-    fileprivate func pathForMouth() -> UIBezierPath
+    private func pathForMouth() -> UIBezierPath
     {
         let mouthWidth = skullRadius / Ratios.SkullRadiusToMouthWidth
         let mouthHeight = skullRadius / Ratios.SkullRadiusToMouthHeight
