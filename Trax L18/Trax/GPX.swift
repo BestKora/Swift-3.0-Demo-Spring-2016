@@ -125,7 +125,7 @@ class GPX: NSObject, XMLParserDelegate
     fileprivate func succeed() { complete(success: true) }
     
     fileprivate func parse() {
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
+        DispatchQueue.global(qos: .userInitiated).async {
             if let data = try? Data(contentsOf: self.url) {
                 let parser = XMLParser(data: data)
                 parser.delegate = self
