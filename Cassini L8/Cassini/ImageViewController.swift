@@ -34,7 +34,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate
             // it's fine for it to block the "user initiated" queue
             // because that's a concurrent queue
             // (so other closures on that queue can run concurrently even as this one's blocked)
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
+            DispatchQueue.global(qos: .userInitiated).async {
                 let contentsOfURL = try? Data(contentsOf: url) // blocks! can't be on main queue!
                 // now that we got the data from the network
                 // we want to put it up in the UI

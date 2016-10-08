@@ -20,7 +20,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     // and set this var in that subclass and then use that subclass in our storyboard
     // (the only purpose of that subclass would be to pick what database we're using)
     var managedObjectContext: NSManagedObjectContext? =
-        (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext
+        (UIApplication.shared.delegate as? AppDelegate)?.managedObjectContext
 
     var tweets = [Array<Twitter.Tweet>]() {
         didSet {
@@ -39,26 +39,26 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     
     // MARK: Fetching Tweets
     
-    private var twitterRequest: Twitter.Request? {
+    fileprivate var twitterRequest: Twitter.Request? {
         if lastTwitterRequest == nil {
-            if let query = searchText where !query.isEmpty {
+            if let query = searchText , !query.isEmpty {
                 return Twitter.Request(search: query + " -filter:retweets", count: 100)
             }
         }
         return lastTwitterRequest?.requestForNewer
     }
     
-    private var lastTwitterRequest: Twitter.Request?
+    fileprivate var lastTwitterRequest: Twitter.Request?
 
-    private func searchForTweets()
+    fileprivate func searchForTweets()
     {
         if let request = twitterRequest {
             lastTwitterRequest = request
             request.fetchTweets { [weak weakSelf = self] newTweets in
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     if request == weakSelf?.lastTwitterRequest {
                         if !newTweets.isEmpty {
-                            weakSelf?.tweets.insert(newTweets, atIndex: 0)
+                            weakSelf?.tweets.insert(newTweets, at: 0)
                             weakSelf?.updateDatabase(newTweets)
                         }
                     }
@@ -72,8 +72,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     
     // add the Twitter.Tweets to our database
 
-    private func updateDatabase(newTweets: [Twitter.Tweet]) {
-        managedObjectContext?.performBlock {
+    fileprivate func updateDatabase(_ newTweets: [Twitter.Tweet]) {
+        managedObjectContext?.perform {
             for twitterInfo in newTweets {
                 // the _ = just lets readers of our code know
                 // that we are intentionally ignoring the return value
@@ -102,49 +102,48 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     // the second way (countForFetchRequest) is much more efficient
     // (since it does the count in the database itself)
 
-    private func printDatabaseStatistics() {
-        managedObjectContext?.performBlock {
-            if let results = try? self.managedObjectContext!.executeFetchRequest(NSFetchRequest(entityName: "TwitterUser")) {
-                print("\(results.count) TwitterUsers")
-            }
+    fileprivate func printDatabaseStatistics() {
+         managedObjectContext?.perform({ 
+           let results = try? self.managedObjectContext!.fetch(NSFetchRequest(entityName: "TwitterUser"))
+             print("\(results?.count) TwitterUsers")
             // a more efficient way to count objects ...
-            let tweetCount = self.managedObjectContext!.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
+            let tweetCount = try! self.managedObjectContext!.count(for: NSFetchRequest(entityName: "Tweet"))
             print("\(tweetCount) Tweets")
-        }
-    }
+         })
+      }
     
     // prepare for the segue that happens
     // when the user hits the Tweeters bar button item
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "TweetersMentioningSearchTerm" {
-            if let tweetersTVC = segue.destinationViewController as? TweetersTableViewController {
+            if let tweetersTVC = segue.destination as? TweetersTableViewController {
                 tweetersTVC.mention = searchText
                 tweetersTVC.managedObjectContext = managedObjectContext
             }
         }
     }
     
-    @IBAction func refresh(sender: UIRefreshControl) {
+    @IBAction func refresh(_ sender: UIRefreshControl) {
         searchForTweets()
     }
     
     // MARK: UITableViewDataSource
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "\(tweets.count - section)"
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return tweets.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets[section].count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.TweetCellIdentifier, forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.TweetCellIdentifier, for: indexPath)
 
         let tweet = tweets[indexPath.section][indexPath.row]
         if let tweetCell = cell as? TweetTableViewCell {
@@ -156,7 +155,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     
     // MARK: Constants
     
-    private struct Storyboard {
+    fileprivate struct Storyboard {
         static let TweetCellIdentifier = "Tweet"
     }
     
@@ -171,7 +170,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     
     // MARK: UITextFieldDelegate
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         searchText = textField.text
         return true

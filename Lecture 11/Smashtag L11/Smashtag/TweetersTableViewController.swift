@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -37,6 +38,7 @@ class TweetersTableViewController: CoreDataTableViewController
 {
     var mention: String? { didSet { updateUI() } }
     var managedObjectContext: NSManagedObjectContext? { didSet { updateUI() } }
+    var resultsController: NSFetchedResultsController<TwitterUser>!
     
        fileprivate func updateUI() {
         if let context = managedObjectContext , mention?.characters.count > 0 {
@@ -47,13 +49,11 @@ class TweetersTableViewController: CoreDataTableViewController
                 ascending: true,
                 selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
             )]
-            
-            fetchedResultsController = NSFetchedResultsController<TwitterUser>(
-                fetchRequest: request,
-                managedObjectContext: context,
-                sectionNameKeyPath: nil,
-                cacheName: nil
-            )
+            resultsController = NSFetchedResultsController(fetchRequest: request,
+                                                           managedObjectContext: context,
+                                                           sectionNameKeyPath: nil,
+                                                           cacheName: nil)
+            fetchedResultsController =  resultsController as? NSFetchedResultsController<NSFetchRequestResult>? ?? nil
         } else {
             fetchedResultsController = nil
         }
@@ -67,7 +67,7 @@ class TweetersTableViewController: CoreDataTableViewController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TwitterUserCell", for: indexPath)
 
-        if let twitterUser = fetchedResultsController?.object(at: indexPath)/* as? TwitterUser*/ {
+        if let twitterUser = fetchedResultsController?.object(at: indexPath) as? TwitterUser {
             var screenName: String?
             twitterUser.managedObjectContext?.performAndWait {
                 // it's easy to forget to do this on the proper queue

@@ -30,7 +30,7 @@ struct FacialExpression
             return EyeBrows(rawValue: rawValue + 1) ?? .furrowed
         }
     }
-    
+   
     enum Mouth: Int {
         case frown
         case smirk
