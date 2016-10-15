@@ -28,24 +28,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate
             // fire up the spinner
             // because we're about to fork something off on another thread
             spinner?.startAnimating()
-            // put a closure on the "user initiated" system queue
-            // this closure does NSData(contentsOfURL:) which blocks
-            // waiting for network response
-            // it's fine for it to block the "user initiated" queue
-            // because that's a concurrent queue
-            // (so other closures on that queue can run concurrently even as this one's blocked)
+           
             DispatchQueue.global(qos: .userInitiated).async {
-                let contentsOfURL = try? Data(contentsOf: url) // blocks! can't be on main queue!
-                // now that we got the data from the network
-                // we want to put it up in the UI
-                // but we can only do that on the main queue
-                // so we queue up a closure here to do that
+                let contentsOfURL = try? Data(contentsOf: url)
                 DispatchQueue.main.async {
-                    // since it could take a long time to fetch the image data
-                    // we make sure here that the image we fetched
-                    // is still the one this ImageViewController wants to display!
-                    // you must always think of these sorts of things
-                    // when programming asynchronously
                     if url == self.imageURL {
                         if let imageData = contentsOfURL {
                             self.image = UIImage(data: imageData)

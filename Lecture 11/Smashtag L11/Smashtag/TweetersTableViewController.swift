@@ -30,39 +30,46 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-// uses CoreDataTableViewController as its superclass
-// so all we need to do is set the fetchedResultsController var
-// and implement tableView(cellForRowAtIndexPath:)
+// используем CoreDataTableViewController в качестве superclass,
+// так что все, что нам нужно сделать:
+// 1. установить переменную fetchedResultsController и
+// 2. реализовать tableView(cellForRowAtIndexPath:)
 
 class TweetersTableViewController: CoreDataTableViewController
 {
     var mention: String? { didSet { updateUI() } }
     var managedObjectContext: NSManagedObjectContext? { didSet { updateUI() } }
-    var resultsController: NSFetchedResultsController<TwitterUser>!
     
        fileprivate func updateUI() {
         if let context = managedObjectContext , mention?.characters.count > 0 {
+            
             let request = NSFetchRequest<TwitterUser>(entityName: "TwitterUser")
-            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@ and !screenName beginswith[c] %@", mention!, "darkside")
+            
+            request.predicate = NSPredicate(format:
+                "any tweets.text contains[c] %@ and !screenName beginswith[c] %@",
+                                                            mention!, "darkside")
             request.sortDescriptors = [NSSortDescriptor(
                 key: "screenName",
                 ascending: true,
                 selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
             )]
-            resultsController = NSFetchedResultsController(fetchRequest: request,
-                                                           managedObjectContext: context,
-                                                           sectionNameKeyPath: nil,
-                                                           cacheName: nil)
-            fetchedResultsController =  resultsController as? NSFetchedResultsController<NSFetchRequestResult>? ?? nil
+            let resultsController:NSFetchedResultsController<TwitterUser>? =
+                
+                              NSFetchedResultsController(fetchRequest: request,
+                                                 managedObjectContext: context,
+                                                   sectionNameKeyPath: nil,
+                                                            cacheName: nil)
+            fetchedResultsController =  resultsController
+                                    as! NSFetchedResultsController<NSFetchRequestResult>?
         } else {
             fetchedResultsController = nil
         }
     }
     
-    // this is the only UITableViewDataSource method we have to implement
-    // if we use a CoreDataTableViewController
-    // the most important call is fetchedResultsController?.objectAtIndexPath(indexPath)
-    // (that's how we get the object that is in this row so we can load the cell up)
+    // это единственный метод UITableViewDataSource, который нужно реализовать,
+    // если мы используем CoreDataTableViewController
+    // очень важная часть - вызов fetchedResultsController?.objectAtIndexPath(indexPath)
+    // (так мы получаем объект, который находится в той строке)
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TwitterUserCell", for: indexPath)
@@ -70,11 +77,11 @@ class TweetersTableViewController: CoreDataTableViewController
         if let twitterUser = fetchedResultsController?.object(at: indexPath) as? TwitterUser {
             var screenName: String?
             twitterUser.managedObjectContext?.performAndWait {
-                // it's easy to forget to do this on the proper queue
+                // легко забыть, что это надо делать на нужной очереди (queue)
                 screenName = twitterUser.screenName
-                // we're not assuming the context is a main queue context
-                // so we'll grab the screenName and return to the main queue
-                // to do the cell.textLabel?.text setting
+                // мы не предполагаем, что context -это контекст на main queue
+                // так что мы захватим screenName и вернем это значениена main queue
+                // чтобы сделать установку типа cell.textLabel?.text
             }
             cell.textLabel?.text = screenName
             if let count = tweetCountWithMentionByTwitterUser(twitterUser) {
@@ -87,8 +94,8 @@ class TweetersTableViewController: CoreDataTableViewController
         return cell
     }
     
-    // private func which figures out how many tweets
-    // were tweeted by the given user that contain our mention
+    // private func, которая определяет сколько tweets, содержащих наш mention,
+    // были посланы заданным пользователем
     
     fileprivate func tweetCountWithMentionByTwitterUser(_ user: TwitterUser) -> Int?
     {

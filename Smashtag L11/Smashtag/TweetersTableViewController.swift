@@ -42,8 +42,11 @@ class TweetersTableViewController: CoreDataTableViewController
     
        fileprivate func updateUI() {
         if let context = managedObjectContext , mention?.characters.count > 0 {
+            
             let request = NSFetchRequest<TwitterUser>(entityName: "TwitterUser")
-            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@ and !screenName beginswith[c] %@", mention!, "darkside")
+            request.predicate = NSPredicate(format:
+                "any tweets.text contains[c] %@ and !screenName beginswith[c] %@",
+                                                             mention!, "darkside")
             request.sortDescriptors = [NSSortDescriptor(
                 key: "screenName",
                 ascending: true,
@@ -53,7 +56,9 @@ class TweetersTableViewController: CoreDataTableViewController
                                                            managedObjectContext: context,
                                                            sectionNameKeyPath: nil,
                                                            cacheName: nil)
-            fetchedResultsController =  resultsController as? NSFetchedResultsController<NSFetchRequestResult>? ?? nil
+            
+            fetchedResultsController =  resultsController as?
+                                  NSFetchedResultsController<NSFetchRequestResult>?
         } else {
             fetchedResultsController = nil
         }

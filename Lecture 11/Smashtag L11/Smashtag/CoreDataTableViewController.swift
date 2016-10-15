@@ -8,7 +8,8 @@
 import UIKit
 import CoreData
 
-class CoreDataTableViewController: UITableViewController, NSFetchedResultsControllerDelegate
+class CoreDataTableViewController: UITableViewController,
+                                   NSFetchedResultsControllerDelegate
 {
     var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? {
         didSet {
