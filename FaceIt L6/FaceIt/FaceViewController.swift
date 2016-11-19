@@ -46,7 +46,7 @@ class FaceViewController: UIViewController
         }
     }
     
-    fileprivate func updateUI() {
+    private func updateUI() {
         if faceView != nil {
             switch expression.eyes {
             case .open: faceView.eyesOpen = true
@@ -58,8 +58,8 @@ class FaceViewController: UIViewController
         }
     }
     
-    fileprivate var mouthCurvatures = [FacialExpression.Mouth.frown:-1.0,.grin:0.5,.smile:1.0,.smirk:-0.5,.neutral:0.0 ]
-    fileprivate var eyeBrowTilts = [FacialExpression.EyeBrows.relaxed:0.5,.furrowed:-0.5,.normal:0.0]
+    private var mouthCurvatures = [FacialExpression.Mouth.frown:-1.0,.grin:0.5,.smile:1.0,.smirk:-0.5,.neutral:0.0 ]
+    private var eyeBrowTilts = [FacialExpression.EyeBrows.relaxed:0.5,.furrowed:-0.5,.normal:0.0]
     
     // MARK: Gesture Handlers
     

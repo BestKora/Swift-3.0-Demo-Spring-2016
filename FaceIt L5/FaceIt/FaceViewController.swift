@@ -52,7 +52,7 @@ class FaceViewController: UIViewController
     // here the Controller is doing its job
     // of interpreting the Model (expression) for the View (faceView)
     
-    fileprivate func updateUI() {
+    private func updateUI() {
         switch expression.eyes {
         case .open: faceView.eyesOpen = true
         case .closed: faceView.eyesOpen = false
@@ -62,8 +62,8 @@ class FaceViewController: UIViewController
         faceView.eyeBrowTilt = eyeBrowTilts[expression.eyeBrows] ?? 0.0
     }
     
-    fileprivate var mouthCurvatures = [FacialExpression.Mouth.frown:-1.0,.grin:0.5,.smile:1.0,.smirk:-0.5,.neutral:0.0 ]
-    fileprivate var eyeBrowTilts = [FacialExpression.EyeBrows.relaxed:0.5,.furrowed:-0.5,.normal:0.0]
+    private var mouthCurvatures = [FacialExpression.Mouth.frown:-1.0,.grin:0.5,.smile:1.0,.smirk:-0.5,.neutral:0.0 ]
+    private var eyeBrowTilts = [FacialExpression.EyeBrows.relaxed:0.5,.furrowed:-0.5,.normal:0.0]
     
     // MARK: Gesture Handlers
     

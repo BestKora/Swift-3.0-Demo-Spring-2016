@@ -7,26 +7,6 @@
 //
 
 import UIKit
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 struct QandA {
     var question: String
@@ -40,7 +20,7 @@ class QandATableViewController: TextTableViewController
     var qanda: QandA {
         get {
             var answers = [String]()
-            if data?.count > 1 {
+            if let dataQandA = data, dataQandA.count > 1 {
                 for answer in data?.last ?? [] {
                     if !answer.isEmpty { answers.append(answer) }
                 }
@@ -156,7 +136,7 @@ class QandATableViewController: TextTableViewController
         manageEmptyRow()
     }
     
-    fileprivate func manageEmptyRow() {
+    private func manageEmptyRow() {
         if data != nil {
             var emptyRow: Int?
             var row = 0

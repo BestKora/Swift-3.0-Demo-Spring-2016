@@ -42,15 +42,15 @@ class EditWaypointViewController: UIViewController, UITextFieldDelegate
     @IBOutlet weak var nameTextField: UITextField! { didSet { nameTextField.delegate = self } }
     @IBOutlet weak var infoTextField: UITextField! { didSet { infoTextField.delegate = self } }
 
-    fileprivate func updateUI() {
+    private func updateUI() {
         nameTextField?.text = waypointToEdit?.name
         infoTextField?.text = waypointToEdit?.info
     }
     
-    fileprivate var ntfObserver: NSObjectProtocol?
-    fileprivate var itfObserver: NSObjectProtocol?
+    private var ntfObserver: NSObjectProtocol?
+    private var itfObserver: NSObjectProtocol?
 
-    fileprivate func listenToTextFields()
+    private func listenToTextFields()
     {
         let center = NotificationCenter.default
         let queue = OperationQueue.main
@@ -75,7 +75,7 @@ class EditWaypointViewController: UIViewController, UITextFieldDelegate
         }
     }
     
-    fileprivate func stopListeningToTextFields() {
+    private func stopListeningToTextFields() {
         if let observer = ntfObserver {
             NotificationCenter.default.removeObserver(observer)
         }

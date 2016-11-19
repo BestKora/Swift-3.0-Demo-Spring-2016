@@ -30,9 +30,9 @@ class AllQandAsTableViewController: UITableViewController
     
     // MARK: Private Implementation
     
-    fileprivate let database = CKContainer.default().publicCloudDatabase
+    private let database = CKContainer.default().publicCloudDatabase
     
-    fileprivate func fetchAllQandAs() {
+    private func fetchAllQandAs() {
         let predicate = NSPredicate(format: "TRUEPREDICATE")
         let query = CKQuery(recordType: Cloud.Entity.QandA, predicate: predicate)
         query.sortDescriptors = [NSSortDescriptor(key: Cloud.Attribute.Question, ascending: true)]
@@ -47,10 +47,10 @@ class AllQandAsTableViewController: UITableViewController
     
     // MARK: Subscription
     
-    fileprivate let subscriptionID = "All QandA Creations and Deletions"
-    fileprivate var cloudKitObserver: NSObjectProtocol?
+    private let subscriptionID = "All QandA Creations and Deletions"
+    private var cloudKitObserver: NSObjectProtocol?
     
-    fileprivate func iCloudSubscribeToQandAs() {
+    private func iCloudSubscribeToQandAs() {
         let predicate = NSPredicate(format: "TRUEPREDICATE")
         let subscription = CKSubscription(
             recordType: Cloud.Entity.QandA,
@@ -78,7 +78,7 @@ class AllQandAsTableViewController: UITableViewController
         )
     }
     
-    fileprivate func iCloudUnsubscribeToQandAs() {
+    private func iCloudUnsubscribeToQandAs() {
         // we forgot to stop listening to the radio station in the lecture demo!
         // here's how we do that ...
         if let observer = cloudKitObserver {
@@ -90,7 +90,7 @@ class AllQandAsTableViewController: UITableViewController
         }
     }
     
-    fileprivate func iCloudHandleSubscriptionNotification(_ ckqn: CKQueryNotification)
+    private func iCloudHandleSubscriptionNotification(_ ckqn: CKQueryNotification)
     {
         if ckqn.subscriptionID == self.subscriptionID {
             if let recordID = ckqn.recordID {

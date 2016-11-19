@@ -6,17 +6,6 @@
 //
 
 import UIKit
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
 
 class TextTableViewController: UITableViewController, UITextViewDelegate
 {
@@ -46,7 +35,7 @@ class TextTableViewController: UITableViewController, UITextViewDelegate
         return textView
     }
     
-    fileprivate func cellForTextView(_ textView: UITextView) -> UITableViewCell? {
+    private func cellForTextView(_ textView: UITextView) -> UITableViewCell? {
         var view = textView.superview
         while (view != nil) && !(view! is UITableViewCell) { view = view!.superview }
         return view as? UITableViewCell
@@ -93,11 +82,13 @@ class TextTableViewController: UITableViewController, UITextViewDelegate
         return heightForRowAtIndexPath(indexPath)
     }
     
-    fileprivate var textViewWidth: CGFloat?
-    fileprivate lazy var sizingTextView: UITextView = self.createTextViewForIndexPath(nil)
+    private var textViewWidth: CGFloat?
+    private lazy var sizingTextView: UITextView = self.createTextViewForIndexPath(nil)
 
-    fileprivate func heightForRowAtIndexPath(_ indexPath: IndexPath) -> CGFloat {
-        if (indexPath as NSIndexPath).section < data?.count && (indexPath as NSIndexPath).row < data?[(indexPath as NSIndexPath).section].count {
+    private func heightForRowAtIndexPath(_ indexPath: IndexPath) -> CGFloat {
+        if let dataQandA = data,
+            (indexPath as NSIndexPath).section < dataQandA.count &&
+            (indexPath as NSIndexPath).row < dataQandA[(indexPath as NSIndexPath).section].count {
             if let contents = data?[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row] {
                 if let textView = visibleTextViewWithContents(contents) {
                     return textView.sizeThatFits(CGSize(width: textView.bounds.size.width, height: tableView.bounds.size.height)).height + 1.0
@@ -111,7 +102,7 @@ class TextTableViewController: UITableViewController, UITextViewDelegate
         return UITableViewAutomaticDimension
     }
     
-    fileprivate func visibleTextViewWithContents(_ contents: String) -> UITextView? {
+    private func visibleTextViewWithContents(_ contents: String) -> UITextView? {
         for cell in tableView.visibleCells {
             for subview in cell.contentView.subviews {
                 if let textView = subview as? UITextView , textView.text == contents {
@@ -151,14 +142,14 @@ class TextTableViewController: UITableViewController, UITextViewDelegate
         textView.resignFirstResponder()
     }
     
-    @objc fileprivate func updateRowHeights() {
+    @objc private func updateRowHeights() {
         tableView.beginUpdates()
         tableView.endUpdates()
     }
     
     // MARK: Content Size Category Change Notifications
     
-    fileprivate var contentSizeObserver: NSObjectProtocol?
+    private var contentSizeObserver: NSObjectProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -9,27 +9,6 @@
 import UIKit
 import CoreData
 
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
-
 // используем CoreDataTableViewController в качестве superclass,
 // так что все, что нам нужно сделать:
 // 1. установить переменную fetchedResultsController и
@@ -40,8 +19,8 @@ class TweetersTableViewController: CoreDataTableViewController
     var mention: String? { didSet { updateUI() } }
     var managedObjectContext: NSManagedObjectContext? { didSet { updateUI() } }
     
-       fileprivate func updateUI() {
-        if let context = managedObjectContext , mention?.characters.count > 0 {
+    private func updateUI() {
+        if let context = managedObjectContext, let mentionString = mention, mentionString.characters.count > 0 {
             
             let request = NSFetchRequest<TwitterUser>(entityName: "TwitterUser")
             
@@ -97,7 +76,7 @@ class TweetersTableViewController: CoreDataTableViewController
     // private func, которая определяет сколько tweets, содержащих наш mention,
     // были посланы заданным пользователем
     
-    fileprivate func tweetCountWithMentionByTwitterUser(_ user: TwitterUser) -> Int?
+    private func tweetCountWithMentionByTwitterUser(_ user: TwitterUser) -> Int?
     {
         var count: Int?
         user.managedObjectContext?.performAndWait {

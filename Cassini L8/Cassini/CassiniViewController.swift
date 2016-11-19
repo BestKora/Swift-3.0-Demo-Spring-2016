@@ -14,7 +14,7 @@ class CassiniViewController: UIViewController, UISplitViewControllerDelegate
     // but we call it Storyboard, because all the constants in it
     // are strings in our Storyboard
 
-    fileprivate struct Storyboard {
+    private struct Storyboard {
         static let ShowImageSegue = "Show Image"
     }
 

@@ -107,24 +107,24 @@ class GPX: NSObject, XMLParserDelegate
 
     // MARK: - Private Implementation
 
-    fileprivate let url: URL
-    fileprivate let completionHandler: GPXCompletionHandler
+    private let url: URL
+    private let completionHandler: GPXCompletionHandler
     
-    fileprivate init(url: URL, completionHandler: @escaping GPXCompletionHandler) {
+    private init(url: URL, completionHandler: @escaping GPXCompletionHandler) {
         self.url = url
         self.completionHandler = completionHandler
     }
     
-    fileprivate func complete(success: Bool) {
+    private func complete(success: Bool) {
         DispatchQueue.main.async {
             self.completionHandler(success ? self : nil)
         }
     }
     
-    fileprivate func fail() { complete(success: false) }
-    fileprivate func succeed() { complete(success: true) }
+    private func fail() { complete(success: false) }
+    private func succeed() { complete(success: true) }
     
-    fileprivate func parse() {
+    private func parse() {
         DispatchQueue.global(qos: .userInitiated).async {
             if let data = try? Data(contentsOf: self.url) {
                 let parser = XMLParser(data: data)
@@ -143,15 +143,15 @@ class GPX: NSObject, XMLParserDelegate
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) { fail() }
     func parser(_ parser: XMLParser, validationErrorOccurred validationError: Error) { fail() }
     
-    fileprivate var input = ""
+    private var input = ""
 
     func parser(_ parser: XMLParser, foundCharacters string: String) {
         input += string
     }
     
-    fileprivate var waypoint: Waypoint?
-    fileprivate var track: Track?
-    fileprivate var link: Link?
+    private var waypoint: Waypoint?
+    private var track: Track?
+    private var link: Link?
 
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
         switch elementName {

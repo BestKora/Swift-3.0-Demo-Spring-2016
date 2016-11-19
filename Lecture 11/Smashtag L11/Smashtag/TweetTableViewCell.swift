@@ -22,7 +22,7 @@ class TweetTableViewCell: UITableViewCell
         }
     }
     
-    fileprivate func updateUI()
+    private func updateUI()
     {
         // reset any existing tweet information
         tweetTextLabel?.attributedText = nil

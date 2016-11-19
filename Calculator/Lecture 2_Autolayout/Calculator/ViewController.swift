@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet fileprivate weak var display: UILabel!
+    @IBOutlet private weak var display: UILabel!
     
     @IBOutlet weak var stack0: UIStackView!
     @IBOutlet weak var stack1: UIStackView!
@@ -22,9 +22,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var minusButton: UIButton!
     
-    fileprivate var userIsInTheMiddleOfTyping = false
+    private var userIsInTheMiddleOfTyping = false
     
-    @IBAction fileprivate func touchDigit(_ sender: UIButton) {
+    @IBAction private func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTyping{
             let textCurrentlyInDisplay = display.text!
@@ -35,7 +35,7 @@ class ViewController: UIViewController {
         userIsInTheMiddleOfTyping = true
     }
     
-    fileprivate var displayValue : Double{
+    private var displayValue : Double{
         get{
             return Double(display.text!)!
         }
@@ -44,9 +44,9 @@ class ViewController: UIViewController {
         }
     }
     
-    fileprivate var brain = CalculatorBrain()
+   private var brain = CalculatorBrain()
     
-    @IBAction fileprivate func performOperation(_ sender: UIButton) {
+    @IBAction private func performOperation(_ sender: UIButton) {
         if userIsInTheMiddleOfTyping {
             brain.setOperand(displayValue)
             userIsInTheMiddleOfTyping = false
@@ -64,7 +64,7 @@ class ViewController: UIViewController {
         configureView(newCollection.verticalSizeClass)
     }
     
-    fileprivate func configureView(_ verticalSizeClass: UIUserInterfaceSizeClass) {
+    private func configureView(_ verticalSizeClass: UIUserInterfaceSizeClass) {
         if (verticalSizeClass == .compact)  {
             stack1.insertArrangedSubview(multiplyButton, at: 0)
             stack2.insertArrangedSubview(divideButton, at: 0)

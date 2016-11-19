@@ -34,7 +34,7 @@ class CloudQandATableViewController: QandATableViewController
     
     // MARK: Private Implementation
 
-    fileprivate var _ckQandARecord: CKRecord? {
+    private var _ckQandARecord: CKRecord? {
         didSet {
             let question = ckQandARecord[Cloud.Attribute.Question] as? String ?? ""
             let answers = ckQandARecord[Cloud.Attribute.Answers] as? [String] ?? []
@@ -44,9 +44,9 @@ class CloudQandATableViewController: QandATableViewController
         }
     }
     
-    fileprivate let database = CKContainer.default().publicCloudDatabase
+    private let database = CKContainer.default().publicCloudDatabase
     
-    @objc fileprivate func iCloudUpdate() {
+    @objc private func iCloudUpdate() {
         if !qanda.question.isEmpty && !qanda.answers.isEmpty {
             ckQandARecord[Cloud.Attribute.Question] = qanda.question as CKRecordValue?
             ckQandARecord[Cloud.Attribute.Answers] = qanda.answers as CKRecordValue?
@@ -54,7 +54,7 @@ class CloudQandATableViewController: QandATableViewController
         }
     }
     
-    fileprivate func iCloudSaveRecord(_ recordToSave: CKRecord) {
+    private func iCloudSaveRecord(_ recordToSave: CKRecord) {
         database.save(recordToSave, completionHandler: { (savedRecord, error) in
             if error?._code == CKError.serverRecordChanged.rawValue {
                 // optimistic locking failed, ignore
@@ -64,7 +64,7 @@ class CloudQandATableViewController: QandATableViewController
         }) 
     }
     
-    fileprivate func retryAfterError(_ error: NSError?, withSelector selector: Selector) {
+    private func retryAfterError(_ error: NSError?, withSelector selector: Selector) {
         if let retryInterval = error?.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
             DispatchQueue.main.async {
                 Timer.scheduledTimer(

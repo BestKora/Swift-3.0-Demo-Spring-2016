@@ -45,22 +45,22 @@ class DropItView: NamedBezierPathsView, UIDynamicAnimatorDelegate
     
     // MARK: Private Implementation
 
-    fileprivate let dropsPerRow = 10
+    private let dropsPerRow = 10
     
-    fileprivate var dropSize: CGSize {
+    private var dropSize: CGSize {
         let size = bounds.size.width / CGFloat(dropsPerRow)
         return CGSize(width: size, height: size)
     }
     
-    fileprivate let dropBehavior = FallingObjectBehavior()
+    private let dropBehavior = FallingObjectBehavior()
 
-    fileprivate lazy var animator: UIDynamicAnimator = {
+    private lazy var animator: UIDynamicAnimator = {
         let animator = UIDynamicAnimator(referenceView: self)
         animator.delegate = self
         return animator
     }()
     
-    fileprivate struct PathNames {
+    private struct PathNames {
         static let MiddleBarrier = "Middle Barrier"
         static let Attachment = "Attachment"
     }
@@ -76,9 +76,9 @@ class DropItView: NamedBezierPathsView, UIDynamicAnimatorDelegate
     
     // MARK: Core Motion
 
-    fileprivate let motionManager = CMMotionManager()
+    private let motionManager = CMMotionManager()
     
-    fileprivate func updateRealGravity() {
+    private func updateRealGravity() {
         if realGravity {
             if motionManager.isAccelerometerAvailable && !motionManager.isAccelerometerActive {
                 motionManager.accelerometerUpdateInterval = 0.25
@@ -107,9 +107,9 @@ class DropItView: NamedBezierPathsView, UIDynamicAnimatorDelegate
     
     // MARK: Attachment
 
-    fileprivate var lastDrop: UIView?
+    private var lastDrop: UIView?
     
-    fileprivate var attachment: UIAttachmentBehavior? {
+    private var attachment: UIAttachmentBehavior? {
         willSet {
             if attachment != nil {
                 animator.removeBehavior(attachment!)
@@ -152,7 +152,7 @@ class DropItView: NamedBezierPathsView, UIDynamicAnimatorDelegate
         removeCompletedRow()
     }
     
-    fileprivate func removeCompletedRow()
+    private func removeCompletedRow()
     {
         var dropsToRemove = [UIView]()
         

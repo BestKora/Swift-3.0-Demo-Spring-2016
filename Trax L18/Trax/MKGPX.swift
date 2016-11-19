@@ -46,7 +46,7 @@ extension GPX.Waypoint : MKAnnotation
     // look in the hyperlink information from the GPX file
     // try to find a url with a given type
 
-    fileprivate func getImageURLofType(_ type: String?) -> URL? {
+    private func getImageURLofType(_ type: String?) -> URL? {
         for link in links {
             if link.type == type {
                 return link.url as URL?

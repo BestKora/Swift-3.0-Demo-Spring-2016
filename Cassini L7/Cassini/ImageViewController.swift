@@ -17,7 +17,7 @@ class ImageViewController: UIViewController
         }
     }
     
-    fileprivate func fetchImage() {
+    private func fetchImage() {
         if let url = imageURL {
             if let imageData = try? Data(contentsOf: url) {
                 image = UIImage(data: imageData)
@@ -31,9 +31,9 @@ class ImageViewController: UIViewController
         }
     }
     
-    fileprivate var imageView = UIImageView()
+    private var imageView = UIImageView()
     
-    fileprivate var image: UIImage? {
+    private var image: UIImage? {
         get {
             return imageView.image
         }

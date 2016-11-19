@@ -29,7 +29,7 @@ class QandAAccessoryTableViewController: QandATableViewController
     
     // MARK: - Private Implementation
 
-    fileprivate func accessoryLabelForContent(_ content: String) -> UILabel? {
+    private func accessoryLabelForContent(_ content: String) -> UILabel? {
         for cell in tableView.visibleCells {
             for subview in cell.contentView.subviews {
                 if let textView = subview as? UITextView , textView.text == content {
@@ -50,7 +50,7 @@ class QandAAccessoryTableViewController: QandATableViewController
         return textView
     }
     
-    fileprivate func createAccessoryLabel(inTextView textView: UITextView) {
+    private func createAccessoryLabel(inTextView textView: UITextView) {
         let label = UILabel()
         label.textAlignment = .right
         label.text = "100"

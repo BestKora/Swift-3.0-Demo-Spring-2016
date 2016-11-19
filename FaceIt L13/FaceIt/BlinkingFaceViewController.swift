@@ -16,7 +16,7 @@ class BlinkingFaceViewController: FaceViewController
         }
     }
     
-    fileprivate struct BlinkRate {
+    private struct BlinkRate {
         static let ClosedDuration = 0.4
         static let OpenDuration = 2.5
     }

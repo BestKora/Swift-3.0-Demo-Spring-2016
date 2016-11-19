@@ -40,19 +40,19 @@ class FaceView: UIView
     
     // MARK: Private Implementation
 
-    fileprivate var skullRadius: CGFloat {
+    private var skullRadius: CGFloat {
         return min(bounds.size.width, bounds.size.height) / 2 * scale
     }
-    fileprivate var skullCenter: CGPoint {
+    private var skullCenter: CGPoint {
         return CGPoint(x: bounds.midX, y: bounds.midY)
     }
 
-    fileprivate enum Eye {
+    private enum Eye {
         case left
         case right
     }
 
-    fileprivate func pathForCircleCenteredAtPoint(_ midPoint: CGPoint, withRadius radius: CGFloat) -> UIBezierPath
+    private func pathForCircleCenteredAtPoint(_ midPoint: CGPoint, withRadius radius: CGFloat) -> UIBezierPath
     {
         let path = UIBezierPath(
             arcCenter: midPoint,
@@ -65,7 +65,7 @@ class FaceView: UIView
         return path
     }
     
-    fileprivate func getEyeCenter(_ eye: Eye) -> CGPoint
+   private func getEyeCenter(_ eye: Eye) -> CGPoint
     {
         let eyeOffset = skullRadius / Ratios.SkullRadiusToEyeOffset
         var eyeCenter = skullCenter
@@ -77,10 +77,10 @@ class FaceView: UIView
         return eyeCenter
     }
     
-    fileprivate lazy var leftEye: EyeView = self.createEye()
-    fileprivate lazy var rightEye: EyeView = self.createEye()
+    private lazy var leftEye: EyeView = self.createEye()
+    private lazy var rightEye: EyeView = self.createEye()
     
-    fileprivate func createEye() -> EyeView {
+   private func createEye() -> EyeView {
         let eye = EyeView()
         eye.isOpaque = false
         eye.color = color
@@ -89,7 +89,7 @@ class FaceView: UIView
         return eye
     }
     
-    fileprivate func positionEye(_ eye: EyeView, center: CGPoint) {
+    private func positionEye(_ eye: EyeView, center: CGPoint) {
         let size = skullRadius / Ratios.SkullRadiusToEyeRadius * 2
         eye.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: size, height: size))
         eye.center = center
@@ -116,7 +116,7 @@ class FaceView: UIView
 //        }
 //    }
     
-    fileprivate func pathForMouth() -> UIBezierPath
+    private func pathForMouth() -> UIBezierPath
     {
         let mouthWidth = skullRadius / Ratios.SkullRadiusToMouthWidth
         let mouthHeight = skullRadius / Ratios.SkullRadiusToMouthHeight
@@ -138,7 +138,7 @@ class FaceView: UIView
         return path
     }
     
-    fileprivate func pathForBrow(_ eye: Eye) -> UIBezierPath
+    private func pathForBrow(_ eye: Eye) -> UIBezierPath
     {
         var tilt = eyeBrowTilt
         switch eye {
@@ -173,7 +173,7 @@ class FaceView: UIView
     
     // MARK: Constants
 
-    fileprivate struct Ratios {
+    private struct Ratios {
         static let SkullRadiusToEyeOffset: CGFloat = 3
         static let SkullRadiusToEyeRadius: CGFloat = 10
         static let SkullRadiusToMouthWidth: CGFloat = 1

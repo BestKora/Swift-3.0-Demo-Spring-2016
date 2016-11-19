@@ -22,7 +22,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate
         }
     }
     
-    fileprivate func fetchImage() {
+    private func fetchImage() {
         if let url = imageURL {
             // fire up the spinner
             // because we're about to fork something off on another thread
@@ -81,14 +81,14 @@ class ImageViewController: UIViewController, UIScrollViewDelegate
         return imageView
     }
     
-    fileprivate var imageView = UIImageView()
+    private var imageView = UIImageView()
     
     // a little helper var
     // it just makes sure things are kept in sync
     // whenever we change the image we're displaying
     // it's purely to make our code look prettier elsewhere in this class
     
-    fileprivate var image: UIImage? {
+   private var image: UIImage? {
         get {
             return imageView.image
         }

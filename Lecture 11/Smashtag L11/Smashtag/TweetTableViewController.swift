@@ -39,7 +39,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     
     // MARK: Fetching Tweets
     
-    fileprivate var twitterRequest: Twitter.Request? {
+    private var twitterRequest: Twitter.Request? {
         if lastTwitterRequest == nil {
             if let query = searchText , !query.isEmpty {
                 return Twitter.Request(search: query + " -filter:retweets", count: 100)
@@ -48,9 +48,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
         return lastTwitterRequest?.requestForNewer
     }
     
-    fileprivate var lastTwitterRequest: Twitter.Request?
+    private var lastTwitterRequest: Twitter.Request?
 
-    fileprivate func searchForTweets()
+    private func searchForTweets()
     {
         if let request = twitterRequest {
             lastTwitterRequest = request
@@ -72,7 +72,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     
     // add the Twitter.Tweets to our database
 
-    fileprivate func updateDatabase(_ newTweets: [Twitter.Tweet]) {
+    private func updateDatabase(_ newTweets: [Twitter.Tweet]) {
         managedObjectContext?.perform {
             for twitterInfo in newTweets {
                 // the _ = just lets readers of our code know
@@ -102,7 +102,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     // the second way (countForFetchRequest) is much more efficient
     // (since it does the count in the database itself)
 
-    fileprivate func printDatabaseStatistics() {
+    private func printDatabaseStatistics() {
          managedObjectContext?.perform({ 
            let results = try? self.managedObjectContext!.fetch(NSFetchRequest(entityName: "TwitterUser"))
              print("\(results?.count) TwitterUsers")
@@ -155,7 +155,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
     
     // MARK: Constants
     
-    fileprivate struct Storyboard {
+    private struct Storyboard {
         static let TweetCellIdentifier = "Tweet"
     }
     

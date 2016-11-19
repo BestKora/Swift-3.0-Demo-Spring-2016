@@ -44,16 +44,16 @@ class GPXViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     // MARK: Private Implementation
 
-    fileprivate func clearWaypoints() {
+    private func clearWaypoints() {
         mapView?.removeAnnotations(mapView.annotations)
     }
     
-    fileprivate func addWaypoints(_ waypoints: [GPX.Waypoint]) {
+    private func addWaypoints(_ waypoints: [GPX.Waypoint]) {
         mapView?.addAnnotations(waypoints)
         mapView?.showAnnotations(waypoints, animated: true)
     }
     
-    fileprivate func selectWaypoint(_ waypoint: GPX.Waypoint?) {
+    private func selectWaypoint(_ waypoint: GPX.Waypoint?) {
         if waypoint != nil {
             mapView.selectAnnotation(waypoint!, animated: true)
         }
@@ -189,7 +189,7 @@ class GPXViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     // MARK: Constants
     
-    fileprivate struct Constants {
+    private struct Constants {
         static let LeftCalloutFrame = CGRect(x: 0, y: 0, width: 59, height: 59) // sad face
         static let AnnotationViewReuseIdentifier = "waypoint"
         static let ShowImageSegue = "Show Image"

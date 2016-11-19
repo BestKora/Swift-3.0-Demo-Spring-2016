@@ -12,13 +12,13 @@ class FallingObjectBehavior: UIDynamicBehavior
 {
     let gravity = UIGravityBehavior()
     
-    fileprivate let collider: UICollisionBehavior = {
+    private let collider: UICollisionBehavior = {
         let collider = UICollisionBehavior()
         collider.translatesReferenceBoundsIntoBoundary = true
         return collider
     }()
     
-    fileprivate let itemBehavior: UIDynamicItemBehavior = {
+    private let itemBehavior: UIDynamicItemBehavior = {
         let dib = UIDynamicItemBehavior()
         dib.allowsRotation = true
         dib.elasticity = 0.75

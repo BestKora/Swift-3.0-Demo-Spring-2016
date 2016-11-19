@@ -72,8 +72,8 @@ extension FaceViewController
         logVCL("viewWillTransitionToSize")
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext!) -> Void in
             self.logVCL("animatingAlongsideTransition")
-            }, completion: { context -> Void in
-                self.logVCL("doneAnimatingAlongsideTransition")
+        }, completion: { context -> Void in
+            self.logVCL("doneAnimatingAlongsideTransition")
         })
     }
 }
@@ -124,8 +124,8 @@ extension EmotionsViewController
         logVCL("viewWillTransitionToSize")
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext!) -> Void in
             self.logVCL("animatingAlongsideTransition")
-            }, completion: { context -> Void in
-                self.logVCL("doneAnimatingAlongsideTransition")
+        }, completion: { context -> Void in
+            self.logVCL("doneAnimatingAlongsideTransition")
         })
     }
 }
