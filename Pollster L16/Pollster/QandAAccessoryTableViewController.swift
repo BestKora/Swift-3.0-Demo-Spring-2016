@@ -66,8 +66,8 @@ class QandAAccessoryTableViewController: QandATableViewController
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        if asking && (indexPath as NSIndexPath).section == Section.Answers {
-            if let answerInRow = data?[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row] {
+        if asking && indexPath.section == Section.Answers {
+            if let answerInRow = data?[indexPath.section][indexPath.row] {
                 accessoryLabelForContent(answerInRow)?.text = "\(accessoryValues[answerInRow] ?? "")"
             }
         }

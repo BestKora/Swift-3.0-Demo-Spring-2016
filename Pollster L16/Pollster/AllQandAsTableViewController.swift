@@ -125,21 +125,21 @@ class AllQandAsTableViewController: UITableViewController
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QandA Cell", for: indexPath)
-        cell.textLabel?.text = allQandAs[(indexPath as NSIndexPath).row].question
+        cell.textLabel?.text = allQandAs[indexPath.row].question
         return cell
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return allQandAs[(indexPath as NSIndexPath).row].wasCreatedByThisUser
+        return allQandAs[indexPath.row].wasCreatedByThisUser
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let record = allQandAs[(indexPath as NSIndexPath).row]
+            let record = allQandAs[indexPath .row]
             database.delete(withRecordID: record.recordID) { (deletedRecord, error) in
                 // handle errors
             }
-            allQandAs.remove(at: (indexPath as NSIndexPath).row)
+            allQandAs.remove(at: indexPath.row)
         }
     }
     
@@ -149,7 +149,7 @@ class AllQandAsTableViewController: UITableViewController
         if segue.identifier == "Show QandA" {
             if let ckQandATVC = segue.destination as? CloudQandATableViewController {
                 if let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) {
-                    ckQandATVC.ckQandARecord = allQandAs[(indexPath as NSIndexPath).row]
+                    ckQandATVC.ckQandARecord = allQandAs[indexPath.row]
                 } else {
                     ckQandATVC.ckQandARecord = CKRecord(recordType: Cloud.Entity.QandA)
                 }

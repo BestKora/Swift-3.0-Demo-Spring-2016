@@ -103,12 +103,12 @@ class QandATableViewController: TextTableViewController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         // only answers can be selected
-        cell.selectionStyle = ((indexPath as NSIndexPath).section == Section.Answers) ? .gray : .none
+        cell.selectionStyle = (indexPath.section == Section.Answers) ? .gray : .none
         return cell
     }
     
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return asking && (indexPath as NSIndexPath).section == Section.Answers
+        return asking && indexPath.section == Section.Answers
     }
     
     // MARK: UITableViewDelegate
@@ -122,12 +122,12 @@ class QandATableViewController: TextTableViewController
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        answer = data?[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
+        answer = data?[indexPath.section][indexPath.row]
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         // only answers can be selected
-        return ((indexPath as NSIndexPath).section == Section.Answers) ? indexPath : nil
+        return (indexPath.section == Section.Answers) ? indexPath : nil
     }
     
     // MARK: UITextViewDelegate

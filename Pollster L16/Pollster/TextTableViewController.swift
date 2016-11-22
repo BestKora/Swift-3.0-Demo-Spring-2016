@@ -56,7 +56,7 @@ class TextTableViewController: UITableViewController, UITextViewDelegate
         let textView = createTextViewForIndexPath(indexPath)
         textView.frame = cell.contentView.bounds
         textViewWidth = textView.frame.size.width
-        textView.text = data?[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
+        textView.text = data?[indexPath.section][indexPath.row]
         textView.delegate = self
         cell.contentView.addSubview(textView)
         return cell
@@ -64,15 +64,15 @@ class TextTableViewController: UITableViewController, UITextViewDelegate
     
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
         if data != nil {
-            data![(toIndexPath as NSIndexPath).section].insert(data![(fromIndexPath as NSIndexPath).section][(fromIndexPath as NSIndexPath).row], at: (toIndexPath as NSIndexPath).row)
-            let fromRow = (fromIndexPath as NSIndexPath).row + (((toIndexPath as NSIndexPath).row < (fromIndexPath as NSIndexPath).row) ? 1 : 0)
-            data![(fromIndexPath as NSIndexPath).section].remove(at: fromRow)
+            data![toIndexPath.section].insert(data![fromIndexPath.section][fromIndexPath.row], at: toIndexPath.row)
+            let fromRow = fromIndexPath.row + ((toIndexPath.row < fromIndexPath.row) ? 1 : 0)
+            data![fromIndexPath.section].remove(at: fromRow)
         }
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            data?[(indexPath as NSIndexPath).section].remove(at: (indexPath as NSIndexPath).row)
+            data?[indexPath.section].remove(at: indexPath.row)
         }
     }
     
@@ -87,9 +87,9 @@ class TextTableViewController: UITableViewController, UITextViewDelegate
 
     private func heightForRowAtIndexPath(_ indexPath: IndexPath) -> CGFloat {
         if let dataQandA = data,
-            (indexPath as NSIndexPath).section < dataQandA.count &&
-            (indexPath as NSIndexPath).row < dataQandA[(indexPath as NSIndexPath).section].count {
-            if let contents = data?[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row] {
+            indexPath.section < dataQandA.count &&
+            indexPath.row < dataQandA[indexPath.section].count {
+            if let contents = data?[indexPath.section][indexPath.row] {
                 if let textView = visibleTextViewWithContents(contents) {
                     return textView.sizeThatFits(CGSize(width: textView.bounds.size.width, height: tableView.bounds.size.height)).height + 1.0
                 } else {
@@ -117,7 +117,7 @@ class TextTableViewController: UITableViewController, UITextViewDelegate
     
     func textViewDidChange(_ textView: UITextView) {
         if let cell = cellForTextView(textView), let indexPath = tableView.indexPath(for: cell) {
-            data?[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row] = textView.text
+            data?[indexPath.section][indexPath.row] = textView.text
         }
         updateRowHeights()
         let editingRect = textView.convert(textView.bounds, to: tableView)
