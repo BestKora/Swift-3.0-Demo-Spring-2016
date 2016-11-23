@@ -22,7 +22,7 @@ class TweetersTableViewController: CoreDataTableViewController
     private func updateUI() {
         if let context = managedObjectContext, let mentionString = mention, mentionString.characters.count > 0 {
             
-            let request = NSFetchRequest<TwitterUser>(entityName: "TwitterUser")
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "TwitterUser")
             
             request.predicate = NSPredicate(format:
                 "any tweets.text contains[c] %@ and !screenName beginswith[c] %@",
@@ -32,14 +32,12 @@ class TweetersTableViewController: CoreDataTableViewController
                 ascending: true,
                 selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
             )]
-            let resultsController:NSFetchedResultsController<TwitterUser>? =
+             fetchedResultsController =
                 
                               NSFetchedResultsController(fetchRequest: request,
                                                  managedObjectContext: context,
                                                    sectionNameKeyPath: nil,
                                                             cacheName: nil)
-            fetchedResultsController =  resultsController
-                                    as! NSFetchedResultsController<NSFetchRequestResult>?
         } else {
             fetchedResultsController = nil
         }

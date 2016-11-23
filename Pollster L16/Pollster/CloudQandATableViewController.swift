@@ -56,7 +56,7 @@ class CloudQandATableViewController: QandATableViewController
     
     private func iCloudSaveRecord(_ recordToSave: CKRecord) {
         database.save(recordToSave, completionHandler: { (savedRecord, error) in
-            if error?._code == CKError.serverRecordChanged.rawValue {
+            if (error as? NSError)?.code == CKError.serverRecordChanged.rawValue {
                 // optimistic locking failed, ignore
             } else if error != nil {
                 self.retryAfterError(error as NSError?, withSelector: #selector(self.iCloudUpdate))

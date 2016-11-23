@@ -60,7 +60,7 @@ class AllQandAsTableViewController: UITableViewController
         )
         // subscription.notificationInfo = ...
         database.save(subscription, completionHandler: { (savedSubscription, error) in
-            if error?._code == CKError.serverRejectedRequest.rawValue {
+            if (error as? NSError)?.code == CKError.serverRejectedRequest.rawValue {
                 // ignore
             } else if error != nil {
                 // report
